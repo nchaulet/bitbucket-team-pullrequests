@@ -19,8 +19,8 @@ class App extends React.Component {
     render() {
         const {credentials, selectedTeam} = this.props;
 
-        if (!credentials) {
-            return (<Login />);
+        if (!credentials.get('logged')) {
+            return (<Login error={credentials.get('error')} />);
         } else if (!selectedTeam) {
           return (<TeamChoose />);
         } else {

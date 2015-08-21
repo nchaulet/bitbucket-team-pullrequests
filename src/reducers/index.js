@@ -1,13 +1,20 @@
 import Immutable from 'immutable';
 import * as actionType from '../actions/type';
 
-export function bitbucketCredentials(state = null, action) {
+const defaultCredentialsState = Immutable.Map({
+    logged: false,
+    error: null
+});
+export function bitbucketCredentials(state = defaultCredentialsState, action) {
     switch(action.type) {
         case actionType.AUTH_LOGIN:
-            return true;
+            return state
+                .set('logged', true);
             break;
         case actionType.AUTH_ERROR:
-            return null;
+            return state
+                .set('logged', false)
+                .set('error', action.payload.error);
             break;
         default:
             return state;
@@ -51,7 +58,7 @@ export function selectedTeam(state = null, action) {
 const defaultPullRequestsState = Immutable.Map({});
 export function pullrequests(state = defaultPullRequestsState, action) {
     switch(action.type){
-        case 'LOAD_PULLREQUESTS':
+        case actionType.PULLREQUESTS_LOAD:
             action.payload.forEach((repoPr) => {
                 pullrequests = Immutable.List(repoPr.pullrequests);
                 state = state.set(repoPr.repo, pullrequests);

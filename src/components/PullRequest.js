@@ -18,27 +18,34 @@ class PullRequest extends React.Component {
 
 
         const old = moment(pr.updated_on).diff(new Date()) * -1  / 1000 / 60 / 60 > 20;
-        const statusClass = "bg-" + (approved != 0 ? 'success' :  (old == true ? 'danger' : 'info'));
+        const statusClass = "bg-" + (approved ? 'success': 'info');
 
         const pullRequestStyle = {
             padding: '10px',
-            marginTop: 5,
-            fontSize: '1.1em'
+            marginTop: 10,
+            borderRadius: '4px',
+            fontSize: '1.4em'
         };
 
         const pullRequestTitleStyle = {
+            fontSize: '1.1em',
             marginLeft: 40,
-
         };
-        console.log(pr);
+
         return (
             <div className={statusClass} style={pullRequestStyle}>
                 <span className="pull-right small">
                     {approved != 0 ? (
-                        <div><i className="fa fa-thumbs-o-up"></i> ({approved})</div>
+                        <div><i className="fa fa-thumbs-o-up"></i> {approved}</div>
+                    ) : null}
+                    {approved != 0 ? (
+                        <br/>
+                    ): null}
+                    {pr.commentsCount != 0 ? (
+                        <div><i className="fa fa-comment-o"></i> {pr.commentsCount}</div>
                     ) : null}
                 </span>
-                <img className="img-circle pull-left" style={avatarStyle} width="30" src={pr.author.links.avatar.href} />
+                <img className="img-circle pull-left" style={avatarStyle} width="30"  src={pr.author.links.avatar.href} />
                 <div style={pullRequestTitleStyle}>
                     <a href={pr.links.html.href} target="_blank">
                         {pr.title}
@@ -49,8 +56,6 @@ class PullRequest extends React.Component {
                         </small>
                     </a>
                 </div>
-
-
                 <div className="clearfix" />
             </div>
         );

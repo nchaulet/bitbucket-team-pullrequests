@@ -5,7 +5,14 @@ let client = new ApiClient();
 
 const apiErrorHandler = (dispatch) => {
     return (error) => {
-
+        if (error.message == 'unauthorized') {
+            dispatch({
+                type: actionType.AUTH_ERROR,
+                payload: {
+                    error: 'Invalid login or password'
+                }
+            });
+        }
     };
 };
 
@@ -24,12 +31,7 @@ export function initRepositories() {
                 payload: repos
             });
             dispatch(loadPullRequests());
-        }, (error, qsdqsd) => {
-            dispatch({
-                type: 'LOGIN_ERROR',
-                payload: null
-            });
-        });
+        }, apiErrorHandler(dispatch));
     };
 }
 
@@ -40,7 +42,12 @@ export function loadPullRequests() {
                 client.fetchData(repo.links.pullrequests.href).then((pullrequests) => {
                     pullrequests = pullrequests.values;
                     let promises = pullrequests.map((pullRequest) => {
-                        return client.fetchData(pullRequest.links.self.href);
+                        return client.fetchData(pullRequest.links.self.href).then((pullRequestDetails) => {
+                            return client.fetchData(pullRequestDetails.links.comments.href).then((comments) => {
+                                pullRequestDetails.commentsCount = comments.size;
+                                return pullRequestDetails;
+                            })
+                        });
                     });
 
                     Promise.all(promises).then((values) => {
@@ -55,7 +62,7 @@ export function loadPullRequests() {
 
         Promise.all(promises).then((values) => {
             dispatch({
-                type: 'LOAD_PULLREQUESTS',
+                type: actionType.PULLREQUESTS_LOAD,
                 payload: values
             });
         });
@@ -71,7 +78,7 @@ export function loadTeams() {
                 type: actionType.TEAMS_LOAD,
                 payload: teams
             });
-        });
+        }, apiErrorHandler(dispatch));
     };
 }
 

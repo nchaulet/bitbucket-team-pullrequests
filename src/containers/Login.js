@@ -14,10 +14,15 @@ class Login extends React.Component {
         maxWidth: 330
     };
 
+    const {error} = this.props;
+
     return (
       <div className="container" style={formStyle}>
         <h2>Login</h2>
         <hr/>
+        {error ? (
+          <div className="alert alert-danger">{error}</div>
+        ) : null}
         <form onSubmit={this.handleLogin.bind(this)}>
           <input ref="pseudo"  type="text" placeholder="bitbucket pseudo" className="form-control" required autofocus />
           <input ref="password" type="password" placeholder="bitbucket password" className="form-control" required />

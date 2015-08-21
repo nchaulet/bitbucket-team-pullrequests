@@ -34,6 +34,7 @@ class TeamChoose extends React.Component {
             <button className="btn btn-lg btn-default btn-block" onClick={this.selectTeam.bind(this, team)} key={team.username}>{team.display_name}</button>
           );
         })}
+        {teams.isEmpty() ? (<div className="alert alert-warning">Oops you are not member of a team on bitbucket !!</div>): null}
       </div>
     );
   }
