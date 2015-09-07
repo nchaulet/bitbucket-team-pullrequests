@@ -3,13 +3,17 @@ import * as actionType from '../actions/type';
 
 const defaultCredentialsState = Immutable.Map({
     logged: false,
+    username: null,
+    password: null,
     error: null
 });
 export function bitbucketCredentials(state = defaultCredentialsState, action) {
     switch(action.type) {
         case actionType.AUTH_LOGIN:
             return state
-                .set('logged', true);
+                .set('logged', true)
+                .set('username', action.payload.username)
+                .set('password', action.payload.password);
             break;
         case actionType.AUTH_ERROR:
             return state

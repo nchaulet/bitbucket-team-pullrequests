@@ -1,7 +1,17 @@
 import ApiClient from '../api';
 import * as actionType from './type';
 
-let client = new ApiClient();
+let client = null;
+
+const getClient = (getState) => {
+    if (!client) {
+        client = new ApiClient();
+    }
+    const credentials = getState().bitbucketCredentials;
+    client.setCredentials(credentials.get('username'), credentials.get('password'));
+
+    return client;
+};
 
 const apiErrorHandler = (dispatch) => {
     return (error) => {
@@ -17,15 +27,18 @@ const apiErrorHandler = (dispatch) => {
 };
 
 export function login(pseudo, password) {
-    client.setCredentials(pseudo, password);
     return {
-        type: actionType.AUTH_LOGIN
+        type: actionType.AUTH_LOGIN,
+        payload: {
+            username: pseudo,
+            password: password
+        }
     };
 };
 
 export function initRepositories() {
     return (dispatch, getState) => {
-        client.getAllRepositoriesForTeam(getState().selectedTeam).then((repos) => {
+        getClient(getState).getAllRepositoriesForTeam(getState().selectedTeam).then((repos) => {
             dispatch({
                 type: actionType.REPOS_LOAD,
                 payload: repos
@@ -39,6 +52,7 @@ export function loadPullRequests() {
     return (dispatch, getState) => {
         var promises = getState().repositories.map((repo) => {
             return new Promise((resolve) => {
+                var client = getClient(getState);
                 client.fetchData(repo.links.pullrequests.href).then((pullrequests) => {
                     pullrequests = pullrequests.values;
                     let promises = pullrequests.map((pullRequest) => {
@@ -72,8 +86,8 @@ export function loadPullRequests() {
 }
 
 export function loadTeams() {
-    return (dispatch) => {
-        client.getTeams().then((teams) => {
+    return (dispatch, getState) => {
+        getClient(getState).getTeams().then((teams) => {
             dispatch({
                 type: actionType.TEAMS_LOAD,
                 payload: teams
