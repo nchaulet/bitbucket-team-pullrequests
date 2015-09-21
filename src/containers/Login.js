@@ -2,6 +2,7 @@ import React from 'react';
 import {login} from '../actions/index';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux'
+import config from '../config';
 
 @connect(
   () => {
@@ -23,12 +24,7 @@ class Login extends React.Component {
         {error ? (
           <div className="alert alert-danger">{error}</div>
         ) : null}
-        <form onSubmit={this.handleLogin.bind(this)}>
-          <input ref="pseudo"  type="text" placeholder="bitbucket pseudo" className="form-control" required autofocus />
-          <input ref="password" type="password" placeholder="bitbucket password" className="form-control" required />
-          <br/>
-          <input className="btn btn-block btn-primary" type="submit" value="Ok" />
-        </form>
+        <a href={'https://bitbucket.org/site/oauth2/authorize?client_id=' + config.BITBUCKET_CLIENT_ID + '&response_type=token'} className="btn btn-primary btn-lg">Connect with bitbucket</a>
       </div>
     );
   }

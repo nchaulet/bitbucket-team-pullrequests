@@ -8,7 +8,16 @@ import App from './App';
 
 const reducer = combineReducers(reducers);
 const finalCreateStore = applyMiddleware(thunk)(createStore);
-const store = finalCreateStore(reducer);
+
+const matches = window.location.hash.match(/access_token=([^&;=]*)&/);
+const initialState = {};
+
+if (matches) {
+    initialState.credentials = decodeURIComponent(matches[1]);
+    window.location.hash = '';
+}
+
+const store = finalCreateStore(reducer, initialState);
 
 class Root extends React.Component {
 

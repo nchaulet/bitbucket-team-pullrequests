@@ -7,8 +7,8 @@ const getClient = (getState) => {
     if (!client) {
         client = new ApiClient();
     }
-    const credentials = getState().bitbucketCredentials;
-    client.setCredentials(credentials.get('username'), credentials.get('password'));
+
+    client.setCredentials(getState().credentials);
 
     return client;
 };

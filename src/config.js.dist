@@ -1,0 +1,3 @@
+export default {
+    BITBUCKET_CLIENT_ID: 'YOUR CLIENT KEY'
+};

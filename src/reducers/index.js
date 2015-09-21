@@ -7,6 +7,11 @@ const defaultCredentialsState = Immutable.Map({
     password: null,
     error: null
 });
+
+export function credentials(state = null, action) {
+    return state;
+}
+
 export function bitbucketCredentials(state = defaultCredentialsState, action) {
     switch(action.type) {
         case actionType.AUTH_LOGIN:

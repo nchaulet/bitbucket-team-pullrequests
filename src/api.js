@@ -13,8 +13,8 @@ class ApiClient {
     this.headers = {};
   }
 
-  setCredentials(pseudo, password) {
-    this.headers['Authorization'] = 'Basic ' + btoa(pseudo + ':' + password);
+  setCredentials(accessCode) {
+    this.headers['Authorization'] = 'Bearer ' + accessCode;
   }
 
   getAllRepositoriesForTeam(team) {

@@ -9,7 +9,7 @@ import Login from './Login';
 @connect(
   (state) => {
     return {
-      credentials: state.bitbucketCredentials,
+      credentials: state.credentials,
       selectedTeam: state.selectedTeam
     };
   }
@@ -19,8 +19,8 @@ class App extends React.Component {
     render() {
         const {credentials, selectedTeam} = this.props;
 
-        if (!credentials.get('logged')) {
-            return (<Login error={credentials.get('error')} />);
+        if (!credentials) {
+            return (<Login />);
         } else if (!selectedTeam) {
           return (<TeamChoose />);
         } else {
