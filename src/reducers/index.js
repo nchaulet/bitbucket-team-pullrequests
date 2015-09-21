@@ -12,25 +12,6 @@ export function credentials(state = null, action) {
     return state;
 }
 
-export function bitbucketCredentials(state = defaultCredentialsState, action) {
-    switch(action.type) {
-        case actionType.AUTH_LOGIN:
-            return state
-                .set('logged', true)
-                .set('username', action.payload.username)
-                .set('password', action.payload.password);
-            break;
-        case actionType.AUTH_ERROR:
-            return state
-                .set('logged', false)
-                .set('error', action.payload.error);
-            break;
-        default:
-            return state;
-            break;
-    }
-}
-
 export function repositories(state = [], action) {
     switch(action.type){
         case actionType.REPOS_LOAD:
