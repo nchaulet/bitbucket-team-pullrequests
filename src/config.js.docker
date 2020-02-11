@@ -1,0 +1,6 @@
+const bitbucket_client_id = process.env.BITBUCKET_CLIENT_ID
+console.log(bitbucket_client_id)
+console.log("${bitbucket_client_id}")
+export default {
+    BITBUCKET_CLIENT_ID: process.env.BITBUCKET_CLIENT_ID
+};
