@@ -20,6 +20,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.template.html'
+    }),
+    new webpack.DefinePlugin({
+      "process.env.BITBUCKET_CLIENT_ID": JSON.stringify(process.env.BITBUCKET_CLIENT_ID)
     })
   ],
   resolve: {

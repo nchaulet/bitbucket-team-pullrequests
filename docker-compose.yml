@@ -1,0 +1,15 @@
+version: '2'
+services:
+  dashboard_pr:
+    container_name: dashboard_pr
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: npm start
+    volumes:
+      - .:/usr/app/
+      - /usr/app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      BITBUCKET_CLIENT_ID: "${BITBUCKET_CLIENT_ID}"
